@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Analyze News — FakeGuard{% endblock %}
+
+{% block content %}
+<div class="analyze-container">
+    <!-- Hero section -->
+    <div class="analyze-hero">
+        <div class="hero-badge">✨ AI-Powered Verification</div>
+        <h1 class="hero-title">
+            Detect <span class="gradient-text">Fake News</span> Instantly
+        </h1>
+        <p class="hero-subtitle">
+            Paste any news headline or article below and our AI model will analyze it for authenticity.
+        </p>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="stats-strip">
+        <div class="stat-item">
+            <span class="stat-value">1000+</span>
+            <span class="stat-label">Headlines Trained</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-value">&lt;1s</span>
+            <span class="stat-label">Analysis Time</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-value">TF-IDF</span>
+            <span class="stat-label">ML Algorithm</span>
+        </div>
+    </div>
+
+    <!-- Analyzer card -->
+    <div class="analyzer-card glass-card">
+        <div class="card-header-strip">
+            <span class="strip-dot red"></span>
+            <span class="strip-dot yellow"></span>
+            <span class="strip-dot green"></span>
+            <span class="strip-title">News Analyzer</span>
+        </div>
+        <form method="POST" action="{{ url_for('analyze') }}" class="analyzer-form" id="analyze-form">
+            <div class="form-group">
+                <label for="headline" class="form-label">
+                    <span class="label-icon">📰</span> News Headline or Text
+                </label>
+                <textarea id="headline" name="headline" class="form-textarea"
+                          placeholder="Paste a news headline or article text here...&#10;&#10;Example: Scientists discover new species in the Amazon rainforest"
+                          rows="5" required minlength="5" maxlength="5000"></textarea>
+                <div class="textarea-footer">
+                    <span class="char-count"><span id="char-count">0</span> / 5000</span>
+                    <span class="form-hint">Minimum 5 characters</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full btn-analyze" id="analyze-btn">
+                <span class="btn-icon">🔍</span>
+                <span class="btn-text">Analyze Now</span>
+                <span class="btn-loader" style="display:none"></span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Info cards -->
+    <div class="info-grid">
+        <div class="info-card glass-card">
+            <div class="info-icon-wrap"><div class="info-icon">🧠</div></div>
+            <h3>ML-Powered</h3>
+            <p>Uses TF-IDF vectorization and Logistic Regression trained on 1000+ headlines</p>
+        </div>
+        <div class="info-card glass-card">
+            <div class="info-icon-wrap"><div class="info-icon">⚡</div></div>
+            <h3>Instant Results</h3>
+            <p>Get fake or real predictions with confidence scores in milliseconds</p>
+        </div>
+        <div class="info-card glass-card">
+            <div class="info-icon-wrap"><div class="info-icon">📊</div></div>
+            <h3>Track History</h3>
+            <p>All your analyses are saved so you can review and compare past results</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

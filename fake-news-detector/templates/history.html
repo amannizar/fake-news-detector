@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Analysis History — FakeGuard{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <div class="history-header">
+        <div>
+            <h1 class="page-title">Analysis <span class="gradient-text">History</span></h1>
+            <p class="page-subtitle">Review your past news analysis results</p>
+        </div>
+        <a href="{{ url_for('analyze') }}" class="btn btn-primary">
+            <span class="btn-icon">🔍</span> New Analysis
+        </a>
+    </div>
+
+    {% if analyses.items %}
+        <div class="history-list">
+            {% for analysis in analyses.items %}
+                <div class="history-item glass-card {{ 'item-fake' if analysis.result == 'FAKE' else 'item-real' }}">
+                    <div class="history-verdict">
+                        <span class="verdict-badge {{ 'badge-fake' if analysis.result == 'FAKE' else 'badge-real' }}">
+                            {% if analysis.result == 'FAKE' %}🚨 FAKE{% else %}✅ REAL{% endif %}
+                        </span>
+                        <span class="confidence-badge">{{ analysis.confidence }}%</span>
+                    </div>
+                    <div class="history-content">
+                        <p class="history-headline">"{{ analysis.headline[:150] }}{% if analysis.headline|length > 150 %}...{% endif %}"</p>
+                        <span class="history-date">{{ analysis.analyzed_at.strftime('%b %d, %Y • %I:%M %p') }}</span>
+                    </div>
+                    <div class="history-actions">
+                        <a href="{{ url_for('result', analysis_id=analysis.id) }}" class="btn btn-sm btn-outline" title="View details">
+                            View
+                        </a>
+                        <form method="POST" action="{{ url_for('delete_analysis', analysis_id=analysis.id) }}"
+                              class="inline-form"
+                              onsubmit="return confirm('Delete this analysis?')">
+                            <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                🗑️
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if analyses.pages > 1 %}
+            <div class="pagination">
+                {% if analyses.has_prev %}
+                    <a href="{{ url_for('history', page=analyses.prev_num) }}" class="btn btn-sm btn-outline">← Previous</a>
+                {% endif %}
+
+                <div class="page-numbers">
+                    {% for p in analyses.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                        {% if p %}
+                            <a href="{{ url_for('history', page=p) }}"
+                               class="page-num {{ 'active' if p == analyses.page else '' }}">{{ p }}</a>
+                        {% else %}
+                            <span class="page-dots">...</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if analyses.has_next %}
+                    <a href="{{ url_for('history', page=analyses.next_num) }}" class="btn btn-sm btn-outline">Next →</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="empty-state glass-card">
+            <div class="empty-icon">📭</div>
+            <h2>No Analyses Yet</h2>
+            <p>Start analyzing news headlines to build your history.</p>
+            <a href="{{ url_for('analyze') }}" class="btn btn-primary">
+                <span class="btn-icon">🔍</span> Analyze Your First Headline
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
