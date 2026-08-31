@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Result — {{ analysis.result }} — FakeGuard{% endblock %}
+
+{% block content %}
+<div class="result-container">
+    <!-- Result card -->
+    <div class="result-card glass-card {{ 'result-fake' if analysis.result == 'FAKE' else 'result-real' }}">
+        <!-- Verdict badge -->
+        <div class="verdict-section">
+            <div class="verdict-icon-wrapper {{ 'fake-glow' if analysis.result == 'FAKE' else 'real-glow' }}">
+                {% if analysis.result == 'FAKE' %}
+                    <span class="verdict-icon">🚨</span>
+                {% else %}
+                    <span class="verdict-icon">✅</span>
+                {% endif %}
+            </div>
+            <h1 class="verdict-label">
+                {% if analysis.result == 'FAKE' %}
+                    <span class="text-fake">Likely Fake</span>
+                {% else %}
+                    <span class="text-real">Likely Real</span>
+                {% endif %}
+            </h1>
+            <p class="verdict-subtitle">Our AI model has analyzed this headline</p>
+        </div>
+
+        <!-- Confidence gauge -->
+        <div class="confidence-section">
+            <div class="gauge-wrapper">
+                <svg class="gauge" viewBox="0 0 200 200" id="confidence-gauge">
+                    <circle class="gauge-bg" cx="100" cy="100" r="85" />
+                    <circle class="gauge-fill {{ 'gauge-fake' if analysis.result == 'FAKE' else 'gauge-real' }}"
+                            cx="100" cy="100" r="85"
+                            id="gauge-circle"
+                            data-confidence="{{ analysis.confidence }}" />
+                </svg>
+                <div class="gauge-center">
+                    <span class="gauge-value" id="gauge-value">0</span>
+                    <span class="gauge-percent">%</span>
+                    <span class="gauge-label">Confidence</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analyzed headline -->
+        <div class="headline-section">
+            <h3 class="section-title">Analyzed Text</h3>
+            <blockquote class="analyzed-text">
+                "{{ analysis.headline }}"
+            </blockquote>
+        </div>
+
+        <!-- Metadata -->
+        <div class="meta-section">
+            <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <span class="meta-label">Analyzed</span>
+                <span class="meta-value">{{ analysis.analyzed_at.strftime('%B %d, %Y at %I:%M %p') }}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">🆔</span>
+                <span class="meta-label">Analysis ID</span>
+                <span class="meta-value">#{{ analysis.id }}</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="result-actions">
+            <a href="{{ url_for('analyze') }}" class="btn btn-primary">
+                <span class="btn-icon">🔍</span> Analyze Another
+            </a>
+            <a href="{{ url_for('history') }}" class="btn btn-outline">
+                <span class="btn-icon">📊</span> View History
+            </a>
+        </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer glass-card">
+        <p>⚠️ <strong>Disclaimer:</strong> This tool uses a simple ML model for educational purposes.
+        Results should not be used as the sole basis for determining the veracity of any news article.
+        Always verify information through multiple trusted sources.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Register — FakeGuard{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card glass-card">
+        <div class="auth-header">
+            <div class="auth-icon">🛡️</div>
+            <h1>Create Account</h1>
+            <p class="auth-subtitle">Join FakeGuard and start verifying news</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}" class="auth-form" id="register-form">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" name="username" class="form-input"
+                           placeholder="Choose a username" required minlength="3"
+                           value="{{ username|default('') }}" autocomplete="username" autofocus>
+                </div>
+                <span class="form-hint">At least 3 characters</span>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📧</span>
+                    <input type="email" id="email" name="email" class="form-input"
+                           placeholder="your@email.com" required
+                           value="{{ email|default('') }}" autocomplete="email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" class="form-input"
+                           placeholder="Create a strong password" required minlength="6"
+                           autocomplete="new-password">
+                    <button type="button" class="toggle-password" onclick="togglePassword('password')" aria-label="Toggle password visibility">
+                        👁️
+                    </button>
+                </div>
+                <div class="password-strength" id="password-strength">
+                    <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+                    <span class="strength-text" id="strength-text">At least 6 characters</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-input"
+                           placeholder="Repeat your password" required minlength="6"
+                           autocomplete="new-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+                <span class="btn-text">Create Account</span>
+                <span class="btn-loader" style="display:none"></span>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}" class="auth-link">Sign in</a></p>
+        </div>
+    </div>
+
+    <div class="auth-decoration">
+        <div class="decoration-orb orb-1"></div>
+        <div class="decoration-orb orb-2"></div>
+        <div class="decoration-orb orb-3"></div>
+    </div>
+</div>
+{% endblock %}
